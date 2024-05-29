@@ -1,6 +1,6 @@
 blueprint:
   name: Power switch with dependent lights
-  description: Before turning on a light, make sure a switch is on first. Useful when using smart switches with usually incompatible smart lights.
+  description: Makes sure a switch is on before turning on a smart light depending on it. Useful when using smart switches with usually incompatible smart lights.
   domain: automation
   input:
     target_switch:
