@@ -1,0 +1,44 @@
+blueprint:
+  name: Power switch with dependent lights
+  description: Before turning on a light, make sure a switch is on first. Useful when using smart switches with usually incompatible smart lights.
+  domain: automation
+  input:
+    target_switch:
+      name: Power Switch
+      description: Switch controlling power to the lights.
+      selector:
+        entity:
+          filter:
+            - domain: [switch, input_boolean]
+    dependent_light:
+      name: Dependent Lights
+      description: The lights requiring the power switch to be on.
+      selector:
+        target:
+          entity:
+            - domain: light
+
+trigger:
+  - platform: event
+    event_type: call_service
+    event_data:
+      domain: light
+      service: turn_on
+      service_data:
+        entity_id: !input dependent_light
+condition:
+  - condition: state
+    entity_id: !input target_switch
+    state: "off"
+action:
+  - service: homeassistant.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: !input target_switch
+  - service: light.turn_on
+    target:
+      entity_id: !input dependent_light
+    data: |
+      {{ trigger.event.data.service_data }}
+mode: restart
