@@ -14,8 +14,8 @@ blueprint:
       name: Dependent Lights
       description: The lights requiring the power switch to be on.
       selector:
-        target:
-          entity:
+        entity:
+          filter:
             - domain: light
 
 trigger:
